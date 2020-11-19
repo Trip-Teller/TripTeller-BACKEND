@@ -287,3 +287,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,linux,windows,webstorm+all,vscode,visualstudiocode,node
+
+db.sqlite3
+
+uploads/
