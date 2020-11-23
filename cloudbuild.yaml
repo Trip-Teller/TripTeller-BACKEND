@@ -1,0 +1,12 @@
+steps:
+  - name: node:12.16.1
+    entrypoint: npm
+    args: ['ci']
+  - name: node:12.16.1
+    entrypoint: npm
+    args: ['run', 'lint']
+  - name: node:12.16.1
+    entrypoint: npm
+    args: ['run', 'test']
+    env:
+      - 'NODE_ENV=ci'
