@@ -6,7 +6,7 @@ module.exports = {
     logging: false,
   },
   dev: {
-    database: 'tirp_teller_dev',
+    database: 'trip_teller_dev',
     define: {
       charset: 'utf8mb4',
       dialectOptions: {
