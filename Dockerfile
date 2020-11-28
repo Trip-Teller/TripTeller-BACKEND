@@ -15,4 +15,4 @@ ENV PORT 80
 EXPOSE 80
 
 # Run server.
-ENTRYPOINT npm run start
+ENTRYPOINT npx sequelize-cli db:migrate --debug && npm run start
