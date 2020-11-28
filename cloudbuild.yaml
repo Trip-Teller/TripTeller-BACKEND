@@ -6,6 +6,11 @@ steps:
     entrypoint: npm
     args: ['run', 'lint']
   - name: node:12.16.1
+    entrypoint: npx
+    args: ['sequelize-cli','db:migrate', '--debug']
+    env:
+      - 'NODE_ENV=ci'
+  - name: node:12.16.1
     entrypoint: npm
     args: ['run', 'test']
     env:
