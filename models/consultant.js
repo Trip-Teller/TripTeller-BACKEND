@@ -19,7 +19,6 @@ module.exports = (sequelize, DataTypes) => {
     },
     backgroundImage: {
       allowNull: false,
-      defaultValue: null,
       type: DataTypes.UUID,
       unique: true,
       validate: {
