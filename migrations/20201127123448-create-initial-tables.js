@@ -131,7 +131,6 @@ module.exports = {
         },
         backgroundImage: {
           allowNull: false,
-          defaultValue: null,
           type: Sequelize.UUID,
           unique: true,
         },
