@@ -43,7 +43,7 @@ const generateAccessToken = (data) => {
   const options = {
     algorithm: 'HS512',
     expiresIn: authConfig.accessTokenExpire,
-    issuer: 'crack',
+    issuer: 'tripteller',
   };
 
   return jwt.sign(data, secret, options);
