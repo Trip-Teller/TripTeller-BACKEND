@@ -1,4 +1,5 @@
 const Errors = require('./errors');
+const handler = require('./handler');
 const HttpError = require('./httpError');
 const HttpBadRequest = require('./httpBadRequest');
 const HttpUnauthorized = require('./httpUnauthorized');
@@ -8,6 +9,7 @@ const HttpInternalServerError = require('./httpInternalServerError');
 
 module.exports = {
   Errors,
+  handler,
   HttpError,
   HttpBadRequest,
   HttpUnauthorized,

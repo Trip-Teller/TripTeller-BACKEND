@@ -12,12 +12,13 @@ const { Token } = db;
  * @returns {Promise<Token>}
  * @throws Error
  */
-const createToken = async (user, transaction) => {
+const createToken = async (user, action, transaction) => {
   // Generate 16-character random string.
   const secret = getRandomHexString(16);
 
   const tokenData = {
     secret,
+    action,
     userId: user.id,
   };
 
