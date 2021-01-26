@@ -82,23 +82,15 @@ module.exports = (sequelize, DataTypes) => {
   User.associate = (models) => {
     User.hasOne(models.Consultant);
     User.hasMany(models.ConsultingData);
-    User.hasMany(models.chatting, {
+    User.hasMany(models.Chatting, {
       as: 'senderChatting',
-      foreignKey: {
-        name: 'sender',
-      },
-      sourceKey: {
-        name: 'id',
-      },
+      foreignKey: 'sender',
+      sourceKey: 'id',
     });
-    User.hasMany(models.chatting, {
+    User.hasMany(models.Chatting, {
       as: 'receiverChatting',
-      foreignKey: {
-        name: 'receiver',
-      },
-      sourceKey: {
-        name: 'id',
-      },
+      foreignKey: 'receiver',
+      sourceKey: 'id',
     });
   };
 
