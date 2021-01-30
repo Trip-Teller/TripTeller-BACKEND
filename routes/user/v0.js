@@ -83,10 +83,7 @@ const createUser = async (req, res) => {
 
   try {
     if (profileImage) {
-      const profileImageData = {
-        fileName: user.profileImage,
-      };
-      if (env !== 'ci') await storageUploadUserProfileImage(profileImageData);
+      if (env !== 'ci') await storageUploadUserProfileImage(profileImage);
     }
   } catch (e) {
     throw new HttpInternalServerError(Errors.SERVER.UNEXPECTED_ERROR, e);
