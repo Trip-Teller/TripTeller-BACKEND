@@ -9,9 +9,9 @@ const bucketName = process.env.STORAGE_USERCONTENTS_HOST;
 
 const storage = new Storage();
 
-const storageUploadUserProfileImage = (fileName) => new Promise((resolve, reject) => {
-  storage.bucket(bucketName).upload(`/tmp/profileImage/${fileName}`, {
-    destination: `/profile/${fileName}`,
+const storageUploadUserProfileImage = (fileData) => new Promise((resolve, reject) => {
+  storage.bucket(bucketName).upload(`${fileData.path}`, {
+    destination: `/profile/${fileData.filename}`,
   }, (err, data) => {
     if (err) reject(err);
     else resolve(data);
