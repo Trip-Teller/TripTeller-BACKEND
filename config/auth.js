@@ -5,7 +5,7 @@ if (!['ci'].includes(env)) {
 }
 
 const ci = {
-  accessTokenSecret: process.env.JWT_SECRET,
+  accessTokenSecret: '1234567890',
   accessTokenExpire: '4h',
   refreshTokenExpire: '30d',
 };
