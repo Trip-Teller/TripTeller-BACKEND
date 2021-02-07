@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 module.exports = (sequelize, DataTypes) => {
   const RefreshToken = sequelize.define('refreshToken', {
     refreshToken: {
@@ -8,11 +10,20 @@ module.exports = (sequelize, DataTypes) => {
         notNull: true,
       },
     },
-    lastIssueAt: {
+    expiresAt: {
       allowNull: false,
       type: DataTypes.DATE,
       validate: {
         isDate: true,
+      },
+    },
+    isExpired: {
+      type: DataTypes.VIRTUAL,
+      /**
+       * @returns {boolean}
+       */
+      get() {
+        return moment(this.expiresAt) < moment();
       },
     },
   }, {
