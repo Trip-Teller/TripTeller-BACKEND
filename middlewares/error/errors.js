@@ -4,6 +4,20 @@ const errors = {
       code: 1,
       message: '로그인하지 않았습니다.',
     },
+    LOGIN_INFO_INCORRECT: {
+      code: 11,
+      message: '로그인 정보가 올바르지 않습니다.',
+    },
+  },
+  COMMON: {
+    EMAIL_MISSING: {
+      code: 12,
+      message: '이메일이 없습니다.',
+    },
+    PASSWORD_MISSING: {
+      code: 13,
+      message: '비밀번호가 없습니다.',
+    },
   },
   USER: {
     AGE_MISSING: {
