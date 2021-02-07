@@ -3,6 +3,8 @@ const crypto = require('crypto');
 const db = require('../models');
 
 const {
+  RefreshToken,
+  Token,
   User,
 } = db;
 
@@ -19,9 +21,11 @@ const generateRandom = (len) => (crypto.randomBytes(len).toString('hex'));
  */
 const createEmailUser = async () => {
   const user = await User.create({
-    role: 'email',
     email: `${generateRandom(4)}@email.com`,
     password: commonPassword,
+    nickname: `nick_${generateRandom(4)}`,
+    birthDate: '1997-12-12',
+    gender: User.GENDER.FEMALE,
   });
   return user;
 };
@@ -30,7 +34,21 @@ const truncateTables = async () => {
   const transaction = await User.sequelize.transaction();
 
   try {
+    await RefreshToken.truncate({
+      cascade: true,
+      restartIdentity: true,
+      force: true,
+      transaction,
+    });
+
     await User.truncate({
+      cascade: true,
+      restartIdentity: true,
+      force: true,
+      transaction,
+    });
+
+    await Token.truncate({
       cascade: true,
       restartIdentity: true,
       force: true,
