@@ -1,6 +1,9 @@
 const crypto = require('crypto');
 
+const request = require('supertest');
 const db = require('../models');
+
+const app = require('../app');
 
 const {
   RefreshToken,
@@ -28,6 +31,27 @@ const createEmailUser = async () => {
     gender: User.GENDER.FEMALE,
   });
   return user;
+};
+
+/**
+ * @param {User} user
+ * @returns {Promise<{accessToken: string, refreshToken: string}>}
+ */
+const userLogin = async (user) => {
+  const res = await request(app)
+    .post('/auth/v0')
+    .send({
+      email: user.email,
+      password: commonPassword,
+    })
+    .set('Accept', 'application/json')
+    .expect('Content-Type', /json/)
+    .expect(201);
+
+  return {
+    accessToken: res.body.accessToken,
+    refreshToken: res.body.refreshToken,
+  };
 };
 
 const truncateTables = async () => {
@@ -67,4 +91,5 @@ const truncateTables = async () => {
 module.exports = {
   createEmailUser,
   truncateTables,
+  userLogin,
 };
