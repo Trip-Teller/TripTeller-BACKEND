@@ -8,6 +8,7 @@ const authConfig = require('../../config/auth')[env];
 const auth = require('../../middlewares/auth');
 const {
   Errors,
+  HttpNotFound,
   HttpBadRequest,
   HttpInternalServerError,
 } = require('../../middlewares/error');
@@ -78,11 +79,42 @@ const emailLogin = async (req, res) => {
     .json(resBody);
 };
 
+/**
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {Promise<*>}
+ */
+const logout = async (req, res) => {
+  const { tokenData } = res.locals.auth;
+
+  let refreshToken;
+  try {
+    refreshToken = await RefreshToken.findByPk(tokenData.refreshTokenId);
+  } catch (e) {
+    throw new HttpInternalServerError(Errors.SERVER.UNEXPECTED_ERROR, e);
+  }
+
+  if (!refreshToken) throw new HttpNotFound(Errors.AUTH.REFRESH_TOKEN_NOT_FOUND);
+
+  try {
+    await refreshToken.destroy();
+  } catch (e) {
+    throw new HttpInternalServerError(Errors.SERVER.UNEXPECTED_ERROR, e);
+  }
+
+  return res
+    .status(204)
+    .end();
+};
+
 const router = express.Router();
 
 router.post('/', asyncRoute(emailLogin));
 
+router.delete('/', auth.authenticate({}), asyncRoute(logout));
+
 module.exports = {
   router,
   emailLogin,
+  logout,
 };
