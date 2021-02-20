@@ -15,6 +15,7 @@ module.exports = {
     },
     dialect: 'mysql',
     host: process.env.DB_ENDPOINT,
+    // eslint-disable-next-line no-console
     logging: console.log,
     password: process.env.DB_PASSWORD,
     username: process.env.DB_USERNAME,

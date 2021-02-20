@@ -1,10 +1,9 @@
+/* eslint-disable no-console */
 const crypto = require('crypto');
 
 const db = require('../models');
 
-const {
-  User,
-} = db;
+const { User } = db;
 
 const commonPassword = 'p@ssw0rd';
 
@@ -12,7 +11,7 @@ const commonPassword = 'p@ssw0rd';
  * @param {number} len
  * @returns {string}
  */
-const generateRandom = (len) => (crypto.randomBytes(len).toString('hex'));
+const generateRandom = (len) => crypto.randomBytes(len).toString('hex');
 
 /**
  * @returns {Promise<*>}
