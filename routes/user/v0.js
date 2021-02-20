@@ -94,7 +94,7 @@ const createUser = async (req, res) => {
       action: Token.ACTION.VALIDATE_LOGIN_EMAIL,
     });
   } catch (e) {
-    throw new HttpInternalServerError(Errors.SERVER.UNEXPECTED_ERROR, e);
+    // do nothing
   }
 
   if (req.file) clearFiles(req.file);
