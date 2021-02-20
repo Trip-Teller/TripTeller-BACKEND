@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const fs = require('fs');
 const { promisify } = require('util');
 
@@ -30,12 +29,21 @@ const clearFiles = (files) => {
 const uploadUserProfileImage = multer({
   dest: '/tmp/profile',
   limits: {
-    fileSize: bytes('1mb'),
+    fileSize: bytes('5mb'),
     files: 1,
   },
 }).single('profileImage');
 
+const uploadBackgroundImage = multer({
+  dest: 'tmp/backgroundImage',
+  limits: {
+    fileSize: bytes('10'),
+    files: 1,
+  },
+}).single('backgroundImage');
+
 module.exports = {
   clearFiles,
   uploadUserProfileImage,
+  uploadBackgroundImage,
 };

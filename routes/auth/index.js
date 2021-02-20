@@ -1,6 +1,5 @@
-/* eslint-disable indent */
 const v0 = require('./v0');
 
 module.exports = {
-    v0,
+  v0,
 };

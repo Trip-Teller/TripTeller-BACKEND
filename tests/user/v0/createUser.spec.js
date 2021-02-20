@@ -1,11 +1,12 @@
-/* eslint-disable mocha/no-hooks-for-single-case */
 /* eslint-disable func-names */
 
 require('moment');
 const httpMocks = require('node-mocks-http');
 const should = require('should');
 
-const { truncateTables } = require('../../common');
+const {
+  truncateTables,
+} = require('../../common');
 const userRouter = require('../../../routes/user');
 
 const method = 'POST';
@@ -45,18 +46,8 @@ describe(`user.v0.createUser ${method} ${url}`, function () {
     // eslint-disable-next-line no-underscore-dangle
     const userData = response._getJSONData();
 
-    userData.should.have.properties(
-      'id',
-      'nickname',
-      'birthDate',
-      'email',
-      'gender',
-      'profileImage',
-      'createdAt',
-      'updatedAt',
-      'isConsultant',
-      'consultantAt',
-    );
+    userData.should.have.properties('id', 'nickname', 'birthDate', 'email', 'gender',
+      'profileImage', 'createdAt', 'updatedAt', 'isConsultant', 'consultantAt');
 
     userData.id.should.be.a.Number();
     userData.nickname.should.be.a.String();

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const Errors = require('./errors');
 const HttpError = require('./httpError');
 const HttpInternalServerError = require('./httpInternalServerError');

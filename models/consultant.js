@@ -50,21 +50,21 @@ module.exports = (sequelize, DataTypes) => {
     },
     cafe: {
       allowNull: false,
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       validate: {
         notNull: true,
       },
     },
     restaurant: {
       allowNull: false,
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       validate: {
         notNull: true,
       },
     },
     place: {
       allowNull: false,
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       validate: {
         notNull: true,
       },
