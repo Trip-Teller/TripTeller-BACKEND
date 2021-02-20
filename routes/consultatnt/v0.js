@@ -130,11 +130,48 @@ const createConsultant = async (req, res) => {
     .json(resBody);
 };
 
+/**
+ * @param req {Request}
+ * @param res {Response}
+ * @returns {Promise<*>}
+ */
+const listConsultants = async (req, res) => {
+  const { region } = req.query;
+
+  const where = {};
+  if (region) {
+    where.region = region;
+  }
+
+  let consultants;
+  try {
+    consultants = await Consultant.findAll({
+      where,
+      include: [{
+        model: FilterTag,
+      }],
+    });
+  } catch (e) {
+    throw new HttpInternalServerError(Errors.SERVER.UNEXPECTED_ERROR, e);
+  }
+
+  for (let i = 0; i < consultants.length; i += 1) {
+    consultants[i].dataValues.filterCount = consultants[i].filterTags.length;
+  }
+
+  return res
+    .status(200)
+    .json(consultants);
+};
+
 const router = express.Router();
 
 router.post('/', auth.authenticate({}), uploadBackgroundImage, asyncRoute(createConsultant));
 
+router.get('/', asyncRoute(listConsultants));
+
 module.exports = {
   router,
   createConsultant,
+  listConsultants,
 };
