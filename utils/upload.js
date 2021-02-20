@@ -29,7 +29,7 @@ const clearFiles = (files) => {
 const uploadUserProfileImage = multer({
   dest: '/tmp/profile',
   limits: {
-    fileSize: bytes('1mb'),
+    fileSize: bytes('5mb'),
     files: 1,
   },
 }).single('profileImage');
