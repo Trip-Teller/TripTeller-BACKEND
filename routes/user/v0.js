@@ -74,13 +74,6 @@ const createUser = async (req, res) => {
     profileImage: profileImage ? uuidv4() : null,
   };
 
-  let user;
-  try {
-    user = await User.create(userData);
-  } catch (e) {
-    throw new HttpInternalServerError(Errors.SERVER.UNEXPECTED_ERROR, e);
-  }
-
   try {
     if (profileImage) {
       if (env !== 'ci') await storageUploadUserProfileImage(profileImage);
@@ -89,16 +82,22 @@ const createUser = async (req, res) => {
     throw new HttpInternalServerError(Errors.SERVER.UNEXPECTED_ERROR, e);
   }
 
-  if (req.file) clearFiles(req.file);
+  let user;
+  try {
+    user = await User.create(userData);
+  } catch (e) {
+    throw new HttpInternalServerError(Errors.SERVER.UNEXPECTED_ERROR, e);
+  }
 
   try {
     await createToken(user, {
       action: Token.ACTION.VALIDATE_LOGIN_EMAIL,
     });
   } catch (e) {
-    throw new HttpInternalServerError(Errors.SERVER.UNEXPECTED_ERROR, e);
+    // do nothing
   }
 
+  if (req.file) clearFiles(req.file);
   delete user.dataValues.password;
 
   return res
