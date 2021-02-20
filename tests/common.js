@@ -1,6 +1,9 @@
+/* eslint-disable no-param-reassign */
 const crypto = require('crypto');
 
 const request = require('supertest');
+const moment = require('moment');
+const { v4: uuidv4 } = require('uuid');
 const db = require('../models');
 
 const app = require('../app');
@@ -34,6 +37,45 @@ const createEmailUser = async () => {
     gender: User.GENDER.FEMALE,
   });
   return user;
+};
+
+/**
+ * @param user {User}
+ * @param region {string}
+ * @returns {Promise<*>}
+ */
+const createConsultant = async (user, region) => {
+  const consultant = await Consultant.create({
+    id: user.id,
+    region,
+    introduce: 'aaaaaaaaaaaaa',
+    title: 'bbbbbbbb',
+    cafe: 'cafe',
+    restaurant: 'restaurant',
+    place: 'place',
+    backgroundImage: uuidv4(),
+  });
+
+  user.isConsultant = true;
+  user.consultantAt = moment();
+
+  await user.save();
+
+  return consultant;
+};
+
+/**
+ * @param consultant {Consultant}
+ * @param type {string}
+ * @returns {Promise<*>}
+ */
+const createFilterTag = async (consultant, type) => {
+  const filterTag = await FilterTag.create({
+    consultantId: consultant.id,
+    tag: type,
+  });
+
+  return filterTag;
 };
 
 /**
@@ -107,6 +149,8 @@ const truncateTables = async () => {
 
 module.exports = {
   createEmailUser,
+  createConsultant,
+  createFilterTag,
   truncateTables,
   userLogin,
 };
