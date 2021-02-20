@@ -6,9 +6,11 @@ const db = require('../models');
 const app = require('../app');
 
 const {
+  Consultant,
   RefreshToken,
   Token,
   User,
+  FilterTag,
 } = db;
 
 const commonPassword = 'p@ssw0rd';
@@ -26,6 +28,7 @@ const createEmailUser = async () => {
   const user = await User.create({
     email: `${generateRandom(4)}@email.com`,
     password: commonPassword,
+    age: 20,
     nickname: `nick_${generateRandom(4)}`,
     birthDate: '1997-12-12',
     gender: User.GENDER.FEMALE,
@@ -59,6 +62,20 @@ const truncateTables = async () => {
 
   try {
     await RefreshToken.truncate({
+      cascade: true,
+      restartIdentity: true,
+      force: true,
+      transaction,
+    });
+
+    await Consultant.truncate({
+      cascade: true,
+      restartIdentity: true,
+      force: true,
+      transaction,
+    });
+
+    await FilterTag.truncate({
       cascade: true,
       restartIdentity: true,
       force: true,
