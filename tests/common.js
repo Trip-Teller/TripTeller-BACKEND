@@ -1,9 +1,6 @@
-<<<<<<< HEAD
-=======
 /* eslint-disable no-console */
 /* eslint-disable no-param-reassign */
-  
->>>>>>> 61e70ad74a15c778f752cd9a8a8e12f1f86d5b1c
+
 const crypto = require('crypto');
 
 const request = require('supertest');
@@ -11,10 +8,6 @@ const moment = require('moment');
 const { v4: uuidv4 } = require('uuid');
 const db = require('../models');
 
-<<<<<<< HEAD
-const {
-  User,
-=======
 const app = require('../app');
 
 const {
@@ -22,8 +15,7 @@ const {
   RefreshToken,
   Token,
   User,
-  FilterTag,
->>>>>>> 61e70ad74a15c778f752cd9a8a8e12f1f86d5b1c
+  FilterTag
 } = db;
 
 const commonPassword = 'p@ssw0rd';
