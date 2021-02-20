@@ -1,6 +1,7 @@
 const env = process.env.NODE_ENV;
 
 const express = require('express');
+const bytes = require('bytes');
 const { v4: uuidv4 } = require('uuid');
 
 const {
@@ -48,6 +49,10 @@ const createUser = async (req, res) => {
   let profileImage;
   if (req.file) {
     profileImage = req.file;
+
+    if (profileImage.size > bytes('1mb')) {
+      throw new HttpBadRequest(Errors.COMMON.FILE_TOO_LARGE);
+    }
   }
 
   let existingUser;

@@ -18,6 +18,10 @@ const errors = {
       code: 13,
       message: '비밀번호가 없습니다.',
     },
+    FILE_TOO_LARGE: {
+      code: 14,
+      message: '파일 크기가 너무 큽니다.',
+    },
   },
   USER: {
     AGE_MISSING: {
