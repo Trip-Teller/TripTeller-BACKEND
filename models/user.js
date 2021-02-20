@@ -80,7 +80,9 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   User.associate = (models) => {
-    User.hasOne(models.Consultant);
+    User.hasOne(models.Consultant, {
+      foreignKey: 'id',
+    });
     User.hasMany(models.ConsultingData);
     User.hasMany(models.Chatting, {
       as: 'senderChatting',
