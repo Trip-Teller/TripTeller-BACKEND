@@ -131,8 +131,8 @@ const createConsultant = async (req, res) => {
 };
 
 /**
- * @param req {Request}
- * @param res {Response}
+ * @param {Request} req
+ * @param {Response} res
  * @returns {Promise<*>}
  */
 const listConsultants = async (req, res) => {
@@ -164,14 +164,43 @@ const listConsultants = async (req, res) => {
     .json(consultants);
 };
 
+/**
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {Promise<*>}
+ */
+const getConsultant = async (req, res) => {
+  const { consultantId } = req.params;
+
+  let consultant;
+  try {
+    consultant = await Consultant.findByPk(consultantId, {
+      include: [{
+        model: FilterTag,
+      }],
+    });
+  } catch (e) {
+    throw new HttpInternalServerError(Errors.SERVER.UNEXPECTED_ERROR, e);
+  }
+
+  consultant.dataValues.filterCount = consultant.dataValues.filterTags.length;
+
+  return res
+    .status(200)
+    .json(consultant);
+};
+
 const router = express.Router();
 
 router.post('/', auth.authenticate({}), uploadBackgroundImage, asyncRoute(createConsultant));
 
 router.get('/', asyncRoute(listConsultants));
 
+router.get('/:consultantId', asyncRoute(getConsultant));
+
 module.exports = {
   router,
   createConsultant,
   listConsultants,
+  getConsultant,
 };
