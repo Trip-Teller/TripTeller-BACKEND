@@ -35,7 +35,7 @@ const uploadUserProfileImage = multer({
 }).single('profileImage');
 
 const uploadBackgroundImage = multer({
-  dest: 'tmp/backgroundImage',
+  dest: '/tmp/backgroundImage',
   limits: {
     fileSize: bytes('10'),
     files: 1,
