@@ -1,2 +1,15 @@
 # TripTeller-BACKEND
-트립텔러의 백엔드
+# <center>나만의 맞춤여행 가이드</center>
+
+
+
+![ex_screenshot](./img/logo.png)
+
+
+
+
+
+
+
+
+
