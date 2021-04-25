@@ -18,6 +18,10 @@ const errors = {
       code: 12,
       message: '이메일이 없습니다.',
     },
+    NO_PERMISSION: {
+      code: 33,
+      message: '권한이 없습니다.',
+    },
     PASSWORD_MISSING: {
       code: 13,
       message: '비밀번호가 없습니다.',
@@ -85,6 +89,10 @@ const errors = {
     PRICE_MISSING: {
       code: 30,
       message: '평균 비용이 없습니다.',
+    },
+    NOT_FOUND: {
+      code: 34,
+      message: '컨설팅 데이터가 존재하지 않습니다.',
     },
     PURPOSE_MISSING: {
       code: 31,
