@@ -83,7 +83,10 @@ module.exports = (sequelize, DataTypes) => {
     User.hasOne(models.Consultant, {
       foreignKey: 'id',
     });
-    User.hasMany(models.ConsultingData);
+    User.hasMany(models.ConsultingData, {
+      foreignKey: 'sender',
+      sourceKey: 'id',
+    });
     User.hasMany(models.Chatting, {
       as: 'senderChatting',
       foreignKey: 'sender',
