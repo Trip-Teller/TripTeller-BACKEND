@@ -4,6 +4,8 @@ const auth = require('../../middlewares/auth');
 const {
   Errors,
   HttpBadRequest,
+  HttpNotFound,
+  HttpForbidden,
   HttpInternalServerError,
 } = require('../../middlewares/error');
 const db = require('../../models');
@@ -61,11 +63,51 @@ const createConsultingData = async (req, res) => {
     .json(consulting);
 };
 
+/**
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {Promise<*>}
+ */
+const getConsultingData = async (req, res) => {
+  const { user: currentUser } = res.locals.auth;
+
+  const { consultingDataId } = req.params;
+
+  let consultingData;
+  try {
+    consultingData = await ConsultingData.findByPk(consultingDataId);
+  } catch (e) {
+    throw new HttpInternalServerError(Errors.SERVER.UNEXPECTED_ERROR, e);
+  }
+
+  if (!consultingData) throw new HttpNotFound(Errors.CONSULTING_DATA.NOT_FOUND);
+
+  if (currentUser.isConsultant) {
+    if ((consultingData.receiver !== currentUser.id)
+      && (consultingData.sender !== currentUser.id)) {
+      throw new HttpForbidden(Errors.COMMON.NO_PERMISSION);
+    }
+  } else if ((consultingData.sender !== currentUser.id)) {
+    throw new HttpForbidden(Errors.COMMON.NO_PERMISSION);
+  }
+
+  return res
+    .status(200)
+    .json(consultingData);
+};
+
 const router = express.Router();
 
-router.post('/', auth.authenticate({}), asyncRoute(createConsultingData));
+router.post('/',
+  auth.authenticate({}),
+  asyncRoute(createConsultingData));
+
+router.get('/:consultingDataId',
+  auth.authenticate({}),
+  asyncRoute(getConsultingData));
 
 module.exports = {
   router,
   createConsultingData,
+  getConsultingData,
 };
