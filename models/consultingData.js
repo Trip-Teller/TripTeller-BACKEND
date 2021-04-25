@@ -57,12 +57,14 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: {
         name: 'sender',
       },
+      targetKey: 'id',
       onDelete: 'CASCADE',
     });
     ConsultingData.belongsTo(models.Consultant, {
       foreignKey: {
         name: 'receiver',
       },
+      targetKey: 'id',
       onDelete: 'CASCADE',
     });
   };
