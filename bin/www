@@ -20,6 +20,7 @@ app.set('port', port);
  */
 
 const server = http.createServer(app);
+
 const socketio = require('socket.io'); // socket 라이브러리 입력
 const io = socketio(server); // express server upgrade with socket server
 const users = [];
@@ -123,6 +124,7 @@ io.on('connection', (socket) => {
   //   }
   // });
 });
+
 /**
  * Listen on provided port, on all network interfaces.
  */

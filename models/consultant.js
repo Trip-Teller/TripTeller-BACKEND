@@ -74,7 +74,10 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Consultant.associate = (models) => {
-    Consultant.hasOne(models.ConsultingData);
+    Consultant.hasOne(models.ConsultingData, {
+      foreignKey: 'receiver',
+      sourceKey: 'id',
+    });
     Consultant.hasMany(models.FilterTag);
     Consultant.belongsTo(models.User, {
       foreignKey: {

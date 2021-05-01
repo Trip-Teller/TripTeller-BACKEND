@@ -18,6 +18,10 @@ const errors = {
       code: 12,
       message: '이메일이 없습니다.',
     },
+    NO_PERMISSION: {
+      code: 33,
+      message: '권한이 없습니다.',
+    },
     PASSWORD_MISSING: {
       code: 13,
       message: '비밀번호가 없습니다.',
@@ -67,6 +71,36 @@ const errors = {
     FILTER_MISSING: {
       code: 21,
       message: '필터가 없습니다.',
+    },
+  },
+  CONSULTING_DATA: {
+    PREFERENCE_MISSING: {
+      code: 27,
+      message: '취향 키워드가 없습니다.',
+    },
+    START_DATE_MISSING: {
+      code: 28,
+      message: '시작 날짜가 없습니다.',
+    },
+    END_DATE_MISSING: {
+      code: 29,
+      message: '종료 날자가 없습니다.',
+    },
+    PRICE_MISSING: {
+      code: 30,
+      message: '평균 비용이 없습니다.',
+    },
+    NOT_FOUND: {
+      code: 34,
+      message: '컨설팅 데이터가 존재하지 않습니다.',
+    },
+    PURPOSE_MISSING: {
+      code: 31,
+      message: '여행 목적이 없습니다.',
+    },
+    WANT_MISSING: {
+      code: 32,
+      message: '원하는 여행이 없습니다.',
     },
   },
   USER: {

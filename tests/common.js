@@ -10,6 +10,7 @@ const app = require('../app');
 
 const {
   Consultant,
+  ConsultingData,
   RefreshToken,
   Token,
   User,
@@ -62,6 +63,26 @@ const createConsultant = async (user, region) => {
   await user.save();
 
   return consultant;
+};
+
+/**
+ * @param {User} user
+ * @param {Consultant} consultant
+ * @returns {Promise<*>}
+ */
+const createConsultingData = async (user, consultant) => {
+  const consultingData = await ConsultingData.create({
+    receiver: consultant.id,
+    sender: user.id,
+    preference: 'aa',
+    startDate: '2021-04-12',
+    endDate: '2021-04-15',
+    price: '200',
+    purpose: 'aa',
+    want: 'aa',
+  });
+
+  return consultingData;
 };
 
 /**
@@ -150,6 +171,7 @@ const truncateTables = async () => {
 module.exports = {
   createEmailUser,
   createConsultant,
+  createConsultingData,
   createFilterTag,
   truncateTables,
   userLogin,
