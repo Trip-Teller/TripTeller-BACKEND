@@ -12,7 +12,7 @@ const {
 } = require('../../common');
 const consultingDataRouter = require('../../../routes/consulting');
 
-const method = 'POST';
+const method = 'GET';
 const url = '/consultingData/v0/:consultantDataId';
 
 describe(`consultantingData.v0.getConsultingData ${method} ${url}`, function () {
