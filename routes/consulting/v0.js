@@ -10,6 +10,8 @@ const {
 } = require('../../middlewares/error');
 const db = require('../../models');
 
+const { Op } = db.Sequelize;
+
 const asyncRoute = require('../../utils/asyncRoute');
 
 const { ConsultingData } = db;
@@ -96,6 +98,61 @@ const getConsultingData = async (req, res) => {
     .json(consultingData);
 };
 
+/**
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {Promise<*>}
+ */
+const listConsultingData = async (req, res) => {
+  const { user: currentUser } = res.locals.auth;
+  const receiver = Number(req.query.receiver);
+  const sender = Number(req.query.sender);
+
+  if (receiver) {
+    if (currentUser.isConsultant) {
+      if (receiver !== currentUser.id) {
+        throw new HttpForbidden(Errors.COMMON.NO_PERMISSION);
+      }
+    }
+  } else if (sender) {
+    if (sender !== currentUser.id) {
+      throw new HttpForbidden(Errors.COMMON.NO_PERMISSION);
+    }
+  }
+
+  if (currentUser.isConsultant) {
+    if ((receiver !== currentUser.id)
+      && (sender !== currentUser.id) && receiver && sender) {
+      throw new HttpForbidden(Errors.COMMON.NO_PERMISSION);
+    }
+  }
+
+  let where = {};
+  if (receiver) where.receiver = receiver;
+  if (sender) where.sender = sender;
+  if (!(receiver || sender)) {
+    where = {
+      [Op.or]: [
+        { receiver: currentUser.id },
+        { sender: currentUser.id },
+      ],
+    };
+  }
+
+  let consultingData;
+  try {
+    consultingData = await ConsultingData.findAll({
+      where,
+    });
+  } catch (err) {
+    throw new HttpInternalServerError(Errors.SERVER.UNEXPECTED_ERROR, err);
+  }
+
+  return res
+    .status(200)
+    .json(consultingData);
+};
+
 const router = express.Router();
 
 router.post('/',
@@ -106,8 +163,13 @@ router.get('/:consultingDataId',
   auth.authenticate({}),
   asyncRoute(getConsultingData));
 
+router.get('/',
+  auth.authenticate({}),
+  asyncRoute(listConsultingData));
+
 module.exports = {
   router,
   createConsultingData,
   getConsultingData,
+  listConsultingData,
 };
