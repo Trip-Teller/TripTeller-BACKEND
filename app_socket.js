@@ -1,6 +1,5 @@
 exports = module.exports = function (io) {
     io.on('connection', function (socket) {
-        console.log(socket)
         console.log(`Connection : SocketId = ${socket.id}`);
 
         let userName = '';
