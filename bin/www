@@ -12,7 +12,7 @@ const http = require('http');
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || '3000' || '3001');
+const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 /**
@@ -20,110 +20,11 @@ app.set('port', port);
  */
 
 const server = http.createServer(app);
+//socket.io모듈을 사용 및 create한 http 서버에 전달
+const io = require('socket.io')(server);
 
-const socketio = require('socket.io'); // socket 라이브러리 입력
-const io = socketio(server); // express server upgrade with socket server
-const users = [];
-
-//이 서버에서는 어떤 client가 connection event를 발생시키고 있는지
-//callback에 넘겨지는 정보들이 다 담겨져 있다.
-io.on('connection', (socket) => {
-  const nickname = ``
-
-  //client가 login 이벤트 발생시키면 어떤 콜백 함수를 작동 시키는지 설정
-  socket.on('login', (data) => {
-    console.log(`${data} 입장했습니다.`)
-    users.push(data);
-    nickname = data;
-
-    //string으로 넘어가는 코드. 그냥 넘기면 JSONArray로 간다.
-    const usersJson = `${users}`;
-    console.log(usersJson);
-
-    //io.emit - 서버에 연결된 모든 소켓에 보냄
-    //socket.emit - 현재 그 소켓에만 보냄
-
-    io.emit('newUser', usersJson);
-  });
-
-  socket.on('say', (data) => {
-    console.log(`${nickname} : ${data}`);
-
-    socket.emit('myMsg', data);
-    //현재 소켓 이외에 서버에 연결된 모든 소켓에 보냄
-    socket.broadcast.emit('newMsg', data);
-  });
-
-  socket.on('disconnect', () => {
-    console.log(`${nickname} 퇴장했습니다`);
-  });
-
-  socket.on('logout', () => {
-    //배열안에 있었던 유저 삭제
-    users.splice(users.indexOf(nickname), 1);
-    const data = {
-      users: users,
-      disconnected: nickname
-    };
-    socket.emit('logout', data);
-  });
-
-  // let addedUser = false;
-
-  // //when the client emits 'new message', this listens and executes
-  // socket.on('new message', (data) => {
-  //   //we tell the client to execute 'new message'
-  //   socket.broadcast.emit('new message', {
-  //     username: socket.username,
-  //     message: data
-  //   });
-  // });
-
-  // //when the client emits 'add user', this listens and executes
-  // socket.on('add user', (username) => {
-  //   if (addedUser) return;
-
-  //   //we store the username in the socket session for this client
-  //   socket.username = username;
-  //   ++numUsers;
-  //   addedUser = true;
-  //   socket.emit('login', {
-  //     numUsers: numUsers
-  //   });
-  //   //echo globally (all clients) that a person has connected
-  //   socket.broadcast.emit('user joined', {
-  //     username: socket.username,
-  //     numUsers: numUsers
-  //   });
-  // });
-
-  // //when the clients emits 'typing', we broadcast it to others
-  // socket.on('typing', () => {
-  //   socket.broadcast.emit('typing', {
-  //     username: socket.username
-  //   });
-  // });
-
-  // //when the clients emits 'stop typing', we broadcast it to others
-  // socket.on('stop typing', () => {
-  //   socket.broadcast.emit('stop typing', {
-  //     username: socket.username
-  //   });
-  // });
-
-  // //when the user disconnects
-  // socket.on('disconnect', () => {
-  //   if (addedUser) {
-  //     --numUsers;
-
-  //     //echo globally that this client has left
-  //     socket.broadcast.emit('user left', {
-  //       username: socket.username,
-  //       numUsers: numUsers
-  //     });
-  //   }
-  // });
-});
+//socket.io의 이벤트 핸들러 등록 및 라이브러리를 전달
+const ioHandler = require('../app_socket')(io);
 
 /**
  * Listen on provided port, on all network interfaces.
